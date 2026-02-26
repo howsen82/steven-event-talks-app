@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Talks Event</title>
+<style>body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #0056b3;
+}
+
+#searchInput {
+    padding: 10px;
+    width: 80%;
+    max-width: 400px;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#schedule {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.talk-card, .lunch-break-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.talk-card h2, .lunch-break-card h2 {
+    color: #0056b3;
+    margin-top: 0;
+}
+
+.talk-card p, .lunch-break-card p {
+    margin: 5px 0;
+}
+
+.talk-card .category, .lunch-break-card .category {
+    font-weight: bold;
+    color: #555;
+}
+
+.talk-card .time, .lunch-break-card .time {
+    font-style: italic;
+    color: #777;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.lunch-break-card {
+    background-color: #e9f7ef; /* A slightly different background for lunch */
+    border: 1px solid #d4edda;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #searchInput {
+        width: 90%;
+    }
+}
+</style></head>
+<body>
+    <header>
+        <h1>Technical Talks Event Schedule</h1>
+        <input type="text" id="searchInput" placeholder="Search by category...">
+    </header>
+    <main id="schedule">
+        <!-- Schedule will be dynamically loaded here -->
+    </main>
+<script>const talksData = [
+    {
+        title: "Introduction to AI in Software Engineering",
+        speakers: ["Dr. Alex W. Smith"],
+        category: ["AI", "Software Engineering"],
+        duration: "1 hour",
+        description: "An overview of how Artificial Intelligence is transforming software development lifecycle, from automated testing to code generation."
+    },
+    {
+        title: "Modern JavaScript Frameworks: A Deep Dive",
+        speakers: ["Jane Doe", "John Public"],
+        category: ["JavaScript", "Web Development", "Frontend"],
+        duration: "1 hour",
+        description: "Exploring the latest trends and best practices in modern JavaScript frameworks like React, Vue, and Angular."
+    },
+    {
+        title: "Cloud Native Architectures with Kubernetes",
+        speakers: ["Chris Johnson"],
+        category: ["Cloud", "DevOps", "Kubernetes"],
+        duration: "1 hour",
+        description: "Building scalable and resilient applications using Kubernetes and other cloud-native technologies."
+    },
+    {
+        title: "Cybersecurity Best Practices for Developers",
+        speakers: ["Dr. Sarah Connor"],
+        category: ["Security", "Development"],
+        duration: "1 hour",
+        description: "Essential cybersecurity practices every developer should know to build secure applications."
+    },
+    {
+        title: "Data Science with Python: From Zero to Hero",
+        speakers: ["Michael Green"],
+        category: ["Data Science", "Python", "Machine Learning"],
+        duration: "1 hour",
+        description: "A practical guide to data science using Python, covering data analysis, visualization, and machine learning."
+    },
+    {
+        title: "The Future of WebAssembly",
+        speakers: ["Emily White"],
+        category: ["Web Development", "WebAssembly"],
+        duration: "1 hour",
+        description: "Discover the potential of WebAssembly for high-performance web applications and beyond."
+    }
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+    const scheduleContainer = document.getElementById('schedule');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentHour = 10; // Event starts at 10:00 AM
+
+    function formatTime(hour, minute) {
+        const h = hour % 12 === 0 ? 12 : hour % 12;
+        const ampm = hour < 12 ? 'AM' : 'PM';
+        const m = minute.toString().padStart(2, '0');
+        return `${h}:${m} ${ampm}`;
+    }
+
+    function renderSchedule(filterCategory = '') {
+        scheduleContainer.innerHTML = ''; // Clear previous schedule
+
+        let talkIndex = 0;
+        let minute = 0;
+
+        for (let i = 0; i < 6; i++) { // Loop for 6 talks and lunch
+            const talk = talksData[talkIndex];
+
+            // Render talk
+            if (talk) {
+                const talkStartTime = formatTime(currentHour, minute);
+                minute += 60; // 1 hour talk
+                const talkEndTime = formatTime(currentHour, minute);
+
+                if (talk.category.some(cat => cat.toLowerCase().includes(filterCategory.toLowerCase()))) {
+                    const talkCard = document.createElement('div');
+                    talkCard.classList.add('talk-card');
+                    talkCard.innerHTML = `
+                        <p class="time">${talkStartTime} - ${talkEndTime}</p>
+                        <h2>${talk.title}</h2>
+                        <p><strong>Speakers:</strong> ${talk.speakers.join(', ')}</p>
+                        <p class="category"><strong>Category:</strong> ${talk.category.join(', ')}</p>
+                        <p>${talk.description}</p>
+                    `;
+                    scheduleContainer.appendChild(talkCard);
+                }
+                talkIndex++;
+
+                // Add 10 minutes transition
+                minute += 10;
+                if (minute >= 60) {
+                    currentHour += Math.floor(minute / 60);
+                    minute = minute % 60;
+                }
+            }
+
+
+            // Check for lunch break after the 3rd talk
+            if (i === 2) {
+                const lunchStartTime = formatTime(currentHour, minute);
+                minute += 60; // 1 hour lunch
+                const lunchEndTime = formatTime(currentHour, minute);
+
+                const lunchCard = document.createElement('div');
+                lunchCard.classList.add('lunch-break-card');
+                lunchCard.innerHTML = `
+                    <p class="time">${lunchStartTime} - ${lunchEndTime}</p>
+                    <h2>Lunch Break</h2>
+                    <p>Enjoy your meal!</p>
+                `;
+                scheduleContainer.appendChild(lunchCard);
+
+                // No transition after lunch, directly start next talk's calculation
+                // The next talk will start at lunchEndTime
+            }
+        }
+    }
+
+    searchInput.addEventListener('input', (event) => {
+        renderSchedule(event.target.value);
+    });
+
+    // Initial render
+    renderSchedule();
+});
+</script></body>
+</html>

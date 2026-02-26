@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #0056b3;
+}
+
+#searchInput {
+    padding: 10px;
+    width: 80%;
+    max-width: 400px;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#schedule {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.talk-card, .lunch-break-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.talk-card h2, .lunch-break-card h2 {
+    color: #0056b3;
+    margin-top: 0;
+}
+
+.talk-card p, .lunch-break-card p {
+    margin: 5px 0;
+}
+
+.talk-card .category, .lunch-break-card .category {
+    font-weight: bold;
+    color: #555;
+}
+
+.talk-card .time, .lunch-break-card .time {
+    font-style: italic;
+    color: #777;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.lunch-break-card {
+    background-color: #e9f7ef; /* A slightly different background for lunch */
+    border: 1px solid #d4edda;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #searchInput {
+        width: 90%;
+    }
+}
