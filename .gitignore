@@ -1,0 +1,19 @@
+# Node.js
+node_modules/
+
+# Build artifacts
+dist/
+build.js
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+.DS_Store
